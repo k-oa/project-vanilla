@@ -1,0 +1,25 @@
+{
+    "name": "project-vanilla",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "concurrently \"npm run dev -w @project-vanilla/client\" \"npm run dev -w @project-vanilla/server\"",
+        "dev:client": "npm run dev -w @project-vanilla/client",
+        "dev:server": "npm run dev -w @project-vanilla/server",
+        "build": "npm run build -w @project-vanilla/protocol && npm run build -w @project-vanilla/shared && npm run build -w @project-vanilla/client && npm run build -w @project-vanilla/server",
+        "start": "cross-env NODE_ENV=production npm run start -w @project-vanilla/server",
+        "start:prod": "npm run build && cross-env NODE_ENV=production npm run start -w @project-vanilla/server"
+    },
+    "devDependencies": {
+        "cross-env": "^10.1.0"
+    }
+}

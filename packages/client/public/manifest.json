@@ -1,0 +1,17 @@
+{
+    "bundles": [
+        {
+            "name": "placeholders",
+            "assets": [
+                {
+                    "alias": "npc",
+                    "src": "/images/player.png"
+                },
+                {
+                    "alias": "cog",
+                    "src": "/images/Cog.png"
+                }
+            ]
+        }
+    ]
+}

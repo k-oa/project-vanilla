@@ -1,0 +1,14 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "moduleResolution": "bundler",
+        "composite": true,
+        "paths": {
+            "@project-vanilla/shared": ["../shared/src"],
+            "@project-vanilla/protocol": ["../protocol/src"]
+        }
+    },
+    "include": ["src"],
+    "references": [{ "path": "../shared" }, { "path": "../protocol" }]
+}
