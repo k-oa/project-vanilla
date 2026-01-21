@@ -11,6 +11,8 @@ node_modules/
 # Build outputs
 dist/
 build/
+packages/*/dist/
+*.tsbuildinfo
 
 # Vite cache
 **/node_modules/.vite/

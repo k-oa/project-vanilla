@@ -1,15 +1,13 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
+        "module": "commonjs",
+        "moduleResolution": "node",
         "outDir": "./dist",
         "rootDir": "./src",
+        "tsBuildInfoFile": "./dist/.tsbuildinfo",
         "composite": true,
-        "paths": {
-            "@project-vanilla/shared": ["../shared/src"],
-            "@project-vanilla/protocol": ["../protocol/src"]
-        }
+        "esModuleInterop": true
     },
     "include": ["src"],
     "references": [{ "path": "../shared" }, { "path": "../protocol" }]

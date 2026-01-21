@@ -1,5 +1,4 @@
-import { Point } from './Point.js';
-
+import { Point } from "./Point";
 
 export class Player {
     constructor(id: string, position: Point) {

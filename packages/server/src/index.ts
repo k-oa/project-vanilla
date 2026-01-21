@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
-import { SocketManager } from "./SocketManager.js";
+import { SocketManager } from "./SocketManager";
 import dotenv from "dotenv";
 import path from "path"; // ✅ ADDED: Import path module to resolve file paths
 
@@ -39,11 +39,6 @@ io.on("connection", (socket) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-    // ✅ FIXED: Missing opening parenthesis in console.log
-    // OLD: console.log`Server running on http://localhost:${PORT}`);
-    console.log(`Server running on http://localhost:${PORT}`);
-
-    // ✅ ADDED: Show network access info
     console.log(`📍 Mode: ${process.env.NODE_ENV || "development"}`);
     console.log(
         `📱 Network: http://${process.env.LOCAL_IP || "YOUR_IP"}:${PORT}`
