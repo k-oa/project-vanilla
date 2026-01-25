@@ -8,20 +8,6 @@ import {
 } from "@project-vanilla/protocol";
 import { GameState } from "../core/GameState";
 
-// rectangle.on("pointertap", sendMessage);
-
-// function sendMessage() {
-//     socket.emit("message", "Tap!");
-// }
-
-// socket.on("connect", () => {
-//     socket.emit("message", "Hello from Pixi!");
-// });
-
-// socket.on("message", (msg) => {
-//     console.log("From server:", msg);
-// });
-
 export class SocketManager {
     socket: Socket<ServerToClientEvents, ClientToServerEvents>;
     gameState: GameState;
@@ -46,7 +32,6 @@ export class SocketManager {
             const position = new Point(data.position.x, data.position.y);
             const p = new Player(data.id, position);
             this.gameState.initPlayer(p);
-            // this.gameState.setMyPlayer(data.id);
         });
 
         this.socket.on(SocketEvent.PLAYER_JOINED, (data) => {
@@ -54,10 +39,6 @@ export class SocketManager {
             const p = new Player(data.id, position);
             this.gameState.addPlayer(p);
         });
-        // this.socket.on("player:left", (playerId) =>
-        //     this.handlePlayerLeft(playerId)
-        // );
-        //     this.socket.on("player:moved", (data) => this.handlePlayerMoved(data));
     }
 
     handlePlayerJoined(data: {
@@ -74,24 +55,4 @@ export class SocketManager {
     disconnect() {
         this.socket.disconnect();
     }
-
-    // handlePlayerLeft(playerId: string) {
-    //     this.players.delete(playerId);
-    //     console.log("Player left:", playerId);
-    // }
-
-    // handlePlayerMoved(data: {
-    //     id: string;
-    //     position: { x: number; y: number };
-    // }) {
-    //     const player = this.players.get(data.id);
-    //     if (player) {
-    //         player.position.x = data.position.x;
-    //         player.position.y = data.position.y;
-    //     }
-    // }
-
-    // sendMove(x: number, y: number) {
-    //     this.socket.emit("player:move", { x, y });
-    // }
 }

@@ -37,11 +37,8 @@ export interface ServerToClientEvents {
     [SocketEvent.PLAYER_JOINED]: (data: PlayerJoinedPayload) => void;
     [SocketEvent.PLAYER_MOVED]: (data: PlayerMovedPayload) => void;
     [SocketEvent.PLAYER_LEFT]: (playerId: string) => void;
-
-    // [SocketEvent.CHAT_MESSAGE]: (data: ChatMessageBroadcastPayload) => void;
 }
 
 export interface ClientToServerEvents {
     [SocketEvent.PLAYER_MOVED]: (data: PlayerMovePayload) => void;
-    // [SocketEvent.CHAT_MESSAGE]: (data: ChatMessagePayload) => void;
 }

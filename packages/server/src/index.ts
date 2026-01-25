@@ -3,7 +3,7 @@ import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { SocketManager } from "./SocketManager";
 import dotenv from "dotenv";
-import path from "path"; // ✅ ADDED: Import path module to resolve file paths
+import path from "path";
 
 const app = express();
 const server = http.createServer(app);
@@ -15,9 +15,7 @@ const envFile =
 
 dotenv.config({ path: path.resolve(__dirname, `../../${envFile}`) });
 
-// ✅ CHANGED: Use SERVER_PORT from .env instead of hardcoded 3000
-// OLD: const port = process.env.SERVER_PORT;
-const PORT = Number(process.env.SERVER_PORT) || 3000; // Convert string to number with fallback
+const PORT = Number(process.env.SERVER_PORT) || 3000;
 
 const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
 const allowedOrigins = clientUrl.split(",").map((url) => url.trim());

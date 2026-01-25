@@ -39,25 +39,4 @@ export class GameState extends EventEmitter<GameEvents> {
             this.emit(PlayerEvent.PLAYER_MOVED, player);
         }
     }
-
-    // getMyPlayer(): Player | undefined {
-    //     if (!this.myPlayerId) return undefined;
-    //     return this.players.get(this.myPlayerId);
-    // }
-
-    // // UI methods
-    // toggleInventory(): void {
-    //     this.isInventoryOpen = !this.isInventoryOpen;
-    //     this.emit("ui:inventory:toggled", this.isInventoryOpen);
-    // }
-
-    // openMenu(): void {
-    //     this.isMenuOpen = true;
-    //     this.emit("ui:menu:opened");
-    // }
-
-    // closeMenu(): void {
-    //     this.isMenuOpen = false;
-    //     this.emit("ui:menu:closed");
-    // }
 }

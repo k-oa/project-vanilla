@@ -41,8 +41,6 @@ export class SocketManager {
         });
 
         socket.on(SocketEvent.DISCONNECT, () => this.handleDisconnect(socket));
-        // socket.on('player:moved', (data) => this.handlePlayerMove(socket, data));
-        // socket.on('player:chat', (data) => this.handlePlayerChat(socket, data));
     }
 
     handleDisconnect(socket: TypedSocket) {
@@ -53,29 +51,4 @@ export class SocketManager {
         this.io.emit(SocketEvent.PLAYER_LEFT, player.id);
         this.players.delete(socket.id);
     }
-
-    //   handleMove(socket, data) {
-    //     const player = this.players.get(socket.id);
-    //     if (!player) return;
-
-    //     const dist = Math.hypot(data.x - player.x, data.y - player.y);
-    //     if (dist > 10) return;
-
-    //     player.x = data.x;
-    //     player.y = data.y;
-
-    //     socket.broadcast.emit('player:moved', {
-    //       id: player.id,
-    //       x: player.x,
-    //       y: player.y
-    //     });
-    //   }
-
-    //   handleChat(socket, data) {
-    //     const player = this.players.get(socket.id);
-    //     if (!player) return;
-
-    //     const msg = data.message.trim().substring(0, 200);
-    //     socket.broadcast.emit('player:chat', { id: player.id, message: msg });
-    //   }
 }

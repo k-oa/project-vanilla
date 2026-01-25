@@ -30,31 +30,3 @@ export class Renderer {
         this.app.stage.addChild(sprite);
     }
 }
-
-// const rectangle = new Graphics().rect(10, 10, 30, 30).fill({
-//     color: 0xff8080,
-// });
-// app.stage.addChild(rectangle);
-
-// rectangle.eventMode = "static";
-// rectangle.cursor = "pointer";
-
-// rectangle.on("pointertap", () => {
-//     console.log("Tap! My player ID is:", socketManager.myPlayerId);
-//     // toggleFullscreen();
-// });
-
-// function toggleFullscreen() {
-//     if (!document.fullscreenElement) {
-//         // Enter fullscreen
-//         document.documentElement.requestFullscreen().catch((err) => {
-//             console.log(
-//                 `Error attempting to enable fullscreen: ${err.message}`
-//             );
-//         });
-//     } else {
-//         // Exit fullscreen
-//         document.exitFullscreen();
-//     }
-// }
-// //     socketManager.sendMove(100, 100);

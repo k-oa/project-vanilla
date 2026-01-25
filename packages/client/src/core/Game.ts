@@ -33,18 +33,5 @@ export class Game {
         this.gameState.on(PlayerEvent.PLAYER_ADDED, (player) => {
             this.renderer.drawPlayer(player);
         });
-
-        // this.gameState.on(PlayerEvent.PLAYER_REMOVED, () =>
-        //     this.renderer.renderPlayers()
-        // );
-        // this.gameState.on(PlayerEvent.PLAYER_MOVED, () =>
-        //     this.renderer.renderPlayers()
-        // );
-
-        // this.gameState.on("ui:inventory:toggled", () =>
-        //     this.renderer.renderUI()
-        // );
-        // this.gameState.on("ui:menu:opened", () => this.renderer.renderUI());
-        // this.gameState.on("ui:menu:closed", () => this.renderer.renderUI());
     }
 }
