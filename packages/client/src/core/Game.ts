@@ -1,56 +1,50 @@
-import { Application, Graphics } from "pixi.js";
+import { GameState } from "./GameState";
+import { Renderer } from "../rendering/Renderer";
 import { SocketManager } from "../network/SocketManager";
+import { PlayerEvent } from "../enums/Events";
 // import { InputManager } from "./InputManager";
 
 export class Game {
-    app: Application;
+    renderer: Renderer;
     // sceneManager: SceneManager;
-    socketManager: SocketManager;
+    socketManager!: SocketManager;
     // inputManager: InputManager;
+    private gameState: GameState;
 
     constructor() {
-        this.app = new Application();
-        const serverUrl =
-            import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
-        this.socketManager = new SocketManager(serverUrl);
-        console.log("SocketManager initialized:", this.socketManager);
-        // this.inputManager = new InputManager();
+        this.gameState = new GameState();
+        this.renderer = new Renderer();
     }
 
     async init() {
-        await this.app.init({
-            resizeTo: window,
+        await this.renderer.init();
+        this.setupStateListeners();
+
+        const serverUrl =
+            import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
+        this.socketManager = new SocketManager(serverUrl, this.gameState);
+    }
+
+    private setupStateListeners(): void {
+        this.gameState.on(PlayerEvent.PLAYER_INIT, (player) => {
+            return;
         });
-        this.app.canvas.style.position = "absolute";
-        this.app.canvas.style.imageRendering = "pixelated";
-        document.body.appendChild(this.app.canvas);
+
+        this.gameState.on(PlayerEvent.PLAYER_ADDED, (player) => {
+            this.renderer.drawPlayer(player);
+        });
+
+        // this.gameState.on(PlayerEvent.PLAYER_REMOVED, () =>
+        //     this.renderer.renderPlayers()
+        // );
+        // this.gameState.on(PlayerEvent.PLAYER_MOVED, () =>
+        //     this.renderer.renderPlayers()
+        // );
+
+        // this.gameState.on("ui:inventory:toggled", () =>
+        //     this.renderer.renderUI()
+        // );
+        // this.gameState.on("ui:menu:opened", () => this.renderer.renderUI());
+        // this.gameState.on("ui:menu:closed", () => this.renderer.renderUI());
     }
 }
-
-// const rectangle = new Graphics().rect(10, 10, 30, 30).fill({
-//     color: 0xff8080,
-// });
-// app.stage.addChild(rectangle);
-
-// rectangle.eventMode = "static";
-// rectangle.cursor = "pointer";
-
-// rectangle.on("pointertap", () => {
-//     console.log("Tap! My player ID is:", socketManager.myPlayerId);
-//     // toggleFullscreen();
-// });
-
-// function toggleFullscreen() {
-//     if (!document.fullscreenElement) {
-//         // Enter fullscreen
-//         document.documentElement.requestFullscreen().catch((err) => {
-//             console.log(
-//                 `Error attempting to enable fullscreen: ${err.message}`
-//             );
-//         });
-//     } else {
-//         // Exit fullscreen
-//         document.exitFullscreen();
-//     }
-// }
-// //     socketManager.sendMove(100, 100);
