@@ -29,27 +29,16 @@ export class SocketManager {
         });
 
         this.socket.on(SocketEvent.PLAYER_INIT, (data) => {
-            const position = new Point(data.position.x, data.position.y);
-            const p = new Player(data.id, position);
-            this.gameState.initPlayer(p);
+            this.gameState.initPlayer(data);
         });
 
         this.socket.on(SocketEvent.PLAYER_JOINED, (data) => {
-            const position = new Point(data.position.x, data.position.y);
-            const p = new Player(data.id, position);
-            this.gameState.addPlayer(p);
+            this.gameState.addPlayer(Player.fromDTO(data.player));
         });
-    }
 
-    handlePlayerJoined(data: {
-        id: string;
-        position: { x: number; y: number };
-    }) {
-        const player = new Player(
-            data.id,
-            new Point(data.position.x, data.position.y)
-        );
-        console.log("Player joined:", data.id);
+        this.socket.on(SocketEvent.PLAYER_LEFT, (id: string) => {
+            this.gameState.removePlayer(id);
+        });
     }
 
     disconnect() {

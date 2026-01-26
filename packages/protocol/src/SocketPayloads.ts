@@ -1,32 +1,18 @@
 import { SocketEvent } from "./SocketEvent";
+import { PlayerDTO } from "./dto";
 
 export interface PlayerInitPayload {
-    id: string;
-    position: { x: number; y: number };
+    playerId: string;
+    players: Record<string, PlayerDTO>;
 }
 
 export interface PlayerJoinedPayload {
-    id: string;
-    position: { x: number; y: number };
+    player: PlayerDTO;
 }
 
 export interface PlayerMovedPayload {
     id: string;
     position: { x: number; y: number };
-}
-
-export interface PlayerMovePayload {
-    x: number;
-    y: number;
-}
-
-export interface ChatMessagePayload {
-    message: string;
-}
-
-export interface ChatMessageBroadcastPayload {
-    playerId: string;
-    message: string;
 }
 
 export interface ServerToClientEvents {
@@ -40,5 +26,5 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-    [SocketEvent.PLAYER_MOVED]: (data: PlayerMovePayload) => void;
+    // [SocketEvent.PLAYER_MOVED]: (data: PlayerMovePayload) => void;
 }

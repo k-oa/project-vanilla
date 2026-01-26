@@ -33,5 +33,9 @@ export class Game {
         this.gameState.on(PlayerEvent.PLAYER_ADDED, (player) => {
             this.renderer.drawPlayer(player);
         });
+
+        this.gameState.on(PlayerEvent.PLAYER_REMOVED, (id) => {
+            this.renderer.removePlayer(id);
+        });
     }
 }

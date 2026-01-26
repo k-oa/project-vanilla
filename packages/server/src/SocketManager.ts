@@ -1,54 +1,45 @@
 import { Server, Socket } from "socket.io";
-import { Player } from "@project-vanilla/shared";
-import { Point } from "@project-vanilla/shared";
-import { SocketEvent } from "@project-vanilla/protocol";
+import { PlayerDTO, SocketEvent } from "@project-vanilla/protocol";
 import {
     ServerToClientEvents,
     ClientToServerEvents,
 } from "@project-vanilla/protocol";
+import { GameServer } from "./GameServer";
 
 type TypedServer = Server<ClientToServerEvents, ServerToClientEvents>;
 type TypedSocket = Socket<ClientToServerEvents, ServerToClientEvents>;
 
 export class SocketManager {
     io: TypedServer;
-    players: Map<string, Player>; //  socketId -> Player
+    gameServer: GameServer;
 
-    constructor(io: TypedServer) {
+    constructor(io: TypedServer, gameServer: GameServer) {
         this.io = io;
-        this.players = new Map();
-    }
-
-    createPlayer(socketId: string) {
-        const player: Player = new Player(
-            `player_${this.players.size}`,
-            new Point(Math.random() * 600, Math.random() * 600)
-        );
-        this.players.set(socketId, player);
-        return player;
+        this.gameServer = gameServer;
     }
 
     handleConnection(socket: TypedSocket) {
-        const player = this.createPlayer(socket.id);
+        const player = this.gameServer.addPlayer(socket.id);
+        const players: Record<string, PlayerDTO> = {};
+
+        this.gameServer.players.forEach((p) => {
+            players[p.id] = p.toDTO();
+        });
 
         socket.emit(SocketEvent.PLAYER_INIT, {
-            id: player.id,
-            position: { x: player.position.x, y: player.position.y },
+            playerId: player.id,
+            players: players,
         });
         socket.broadcast.emit(SocketEvent.PLAYER_JOINED, {
-            id: player.id,
-            position: { x: player.position.x, y: player.position.y },
+            player: player.toDTO(),
         });
 
         socket.on(SocketEvent.DISCONNECT, () => this.handleDisconnect(socket));
     }
 
     handleDisconnect(socket: TypedSocket) {
-        const player = this.players.get(socket.id);
-        if (!player) {
-            return;
-        }
-        this.io.emit(SocketEvent.PLAYER_LEFT, player.id);
-        this.players.delete(socket.id);
+        const playerId = this.gameServer.removePlayer(socket.id);
+        if (!playerId) return;
+        this.io.emit(SocketEvent.PLAYER_LEFT, playerId);
     }
 }

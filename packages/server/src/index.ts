@@ -2,6 +2,7 @@ import express from "express";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { SocketManager } from "./SocketManager";
+import { GameServer } from "./GameServer";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -30,7 +31,8 @@ const io = new SocketIOServer(server, {
     },
 });
 
-const socketManager = new SocketManager(io);
+const gameServer = new GameServer();
+const socketManager = new SocketManager(io, gameServer);
 
 io.on("connection", (socket) => {
     socketManager.handleConnection(socket);
