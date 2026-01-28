@@ -3,9 +3,9 @@ import { Player } from "@project-vanilla/shared";
 import { AssetManager } from "./AssetManager";
 
 export class Renderer {
-    private app: Application;
+    public app: Application;
     private assetManager: AssetManager;
-    private platerSprites: Map<string, Sprite> = new Map();
+    private playerSprites: Map<string, Sprite> = new Map();
 
     constructor() {
         this.app = new Application();
@@ -29,12 +29,17 @@ export class Renderer {
         sprite.anchor.set(0.5, 0.5);
         sprite.position.set(player.position.x, player.position.y);
         this.app.stage.addChild(sprite);
-        this.platerSprites.set(player.id, sprite);
+        this.playerSprites.set(player.id, sprite);
+    }
+
+    updatePlayerPosition(id: string, position: { x: number; y: number }) {
+        const sprite = this.playerSprites.get(id)!;
+        sprite.position.set(position.x + sprite.x, position.y + sprite.y);
     }
 
     removePlayer(id: string) {
-        const sprite = this.platerSprites.get(id)!;
+        const sprite = this.playerSprites.get(id)!;
         this.app.stage.removeChild(sprite);
-        this.platerSprites.delete(id);
+        this.playerSprites.delete(id);
     }
 }
