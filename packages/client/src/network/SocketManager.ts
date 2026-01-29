@@ -1,6 +1,5 @@
 import { io, Socket } from "socket.io-client";
 import { Player } from "@project-vanilla/shared";
-import { Point } from "@project-vanilla/shared";
 import { SocketEvent } from "@project-vanilla/protocol";
 import {
     ServerToClientEvents,
@@ -15,7 +14,6 @@ export class SocketManager {
     constructor(serverUrl: string, gameState: GameState) {
         this.socket = io(serverUrl);
         this.gameState = gameState;
-
         this.setupListeners();
     }
 
@@ -32,12 +30,16 @@ export class SocketManager {
             this.gameState.initPlayer(data);
         });
 
-        this.socket.on(SocketEvent.PLAYER_JOINED, (data) => {
-            this.gameState.addPlayer(Player.fromDTO(data.player));
+        this.socket.on(SocketEvent.PLAYER_JOINED, (player) => {
+            this.gameState.addPlayer(Player.fromDTO(player));
         });
 
-        this.socket.on(SocketEvent.PLAYER_LEFT, (id: string) => {
+        this.socket.on(SocketEvent.PLAYER_LEFT, (id) => {
             this.gameState.removePlayer(id);
+        });
+
+        this.socket.on(SocketEvent.PLAYER_MOVING, (data) => {
+            this.gameState.movePlayer(data.id, data.moveDirection);
         });
     }
 

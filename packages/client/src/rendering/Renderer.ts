@@ -34,12 +34,13 @@ export class Renderer {
 
     updatePlayerPosition(id: string, position: { x: number; y: number }) {
         const sprite = this.playerSprites.get(id)!;
-        sprite.position.set(position.x + sprite.x, position.y + sprite.y);
+        sprite.position.set(sprite.x + position.x, sprite.y + position.y);
     }
 
     removePlayer(id: string) {
         const sprite = this.playerSprites.get(id)!;
         this.app.stage.removeChild(sprite);
         this.playerSprites.delete(id);
+        sprite.destroy();
     }
 }

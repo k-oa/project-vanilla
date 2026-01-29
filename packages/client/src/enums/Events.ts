@@ -1,8 +1,9 @@
 export const PlayerEvent = {
+    PLAYER_INIT: "player.init",
     PLAYER_ADDED: "player.added",
     PLAYER_REMOVED: "player.removed",
-    PLAYER_MOVED: "player.moved",
-    PLAYER_INIT: "player.init",
+    PLAYER_MOVING: "player.moving",
+    PLAYER_STOP_MOVING: "player.stop_moving",
 } as const;
 
 export type PlayerEventType = (typeof PlayerEvent)[keyof typeof PlayerEvent];

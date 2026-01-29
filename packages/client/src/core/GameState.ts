@@ -2,7 +2,6 @@ import { EventEmitter } from "./EventEmitter";
 import { PlayerEvent } from "../enums/Events";
 import { GameEvents } from "../types/events";
 import { Player } from "@project-vanilla/shared";
-import { Point } from "@project-vanilla/shared";
 import { PlayerInitPayload } from "@project-vanilla/protocol";
 
 export class GameState extends EventEmitter<GameEvents> {
@@ -14,11 +13,7 @@ export class GameState extends EventEmitter<GameEvents> {
 
     initPlayer(data: PlayerInitPayload): void {
         this.playerId = data.playerId;
-
-        this.emit(
-            PlayerEvent.PLAYER_INIT,
-            Player.fromDTO(data.players[data.playerId])
-        );
+        this.players = {};
 
         for (const p of Object.values(data.players)) {
             this.addPlayer(Player.fromDTO(p));
@@ -32,18 +27,18 @@ export class GameState extends EventEmitter<GameEvents> {
 
     removePlayer(id: string): void {
         const player = this.players[id];
-        if (player) {
-            delete this.players[id];
-            this.emit(PlayerEvent.PLAYER_REMOVED, id);
-        }
+        if (!player) return;
+
+        delete this.players[id];
+        this.emit(PlayerEvent.PLAYER_REMOVED, id);
     }
 
-    updatePlayerPosition(id: string, position: Point): void {
+    movePlayer(id: string, moveDirection: { x: number; y: number }): void {
         const player = this.players[id];
-        if (player) {
-            player.position.x = position.x;
-            player.position.y = position.y;
-            this.emit(PlayerEvent.PLAYER_MOVED, player);
-        }
+        if (!player) return;
+
+        player.position.x += moveDirection.x;
+        player.position.y += moveDirection.y;
+        this.emit(PlayerEvent.PLAYER_MOVING, { id, moveDirection });
     }
 }

@@ -1,9 +1,10 @@
+import { SocketEvent } from "@project-vanilla/protocol";
+import { GameLoop } from "@project-vanilla/shared";
 import { GameState } from "./GameState";
 import { Renderer } from "../rendering/Renderer";
 import { SocketManager } from "../network/SocketManager";
 import { PlayerEvent, GameAction } from "../enums/Events";
 import { InputManager } from "./InputManager";
-import { GameLoop } from "@project-vanilla/shared";
 
 export class Game extends GameLoop {
     renderer: Renderer;
@@ -32,10 +33,6 @@ export class Game extends GameLoop {
     }
 
     private setupEventListeners(): void {
-        this.gameState.on(PlayerEvent.PLAYER_INIT, (player) => {
-            return;
-        });
-
         this.gameState.on(PlayerEvent.PLAYER_ADDED, (player) => {
             this.renderer.drawPlayer(player);
         });
@@ -44,11 +41,15 @@ export class Game extends GameLoop {
             this.renderer.removePlayer(id);
         });
 
+        this.gameState.on(PlayerEvent.PLAYER_MOVING, (data) => {
+            this.renderer.updatePlayerPosition(data.id, data.moveDirection);
+        });
+
         this.inputManager.on(GameAction.MOVE, (data) => {
-            const player = this.gameState.players[this.gameState.playerId!];
-            const playerSprite = this.renderer.updatePlayerPosition(player.id, {
-                x: data.direction.x,
-                y: data.direction.y,
+            this.gameState.movePlayer(this.gameState.playerId!, data);
+            this.socketManager.socket.emit(SocketEvent.PLAYER_MOVING, {
+                id: this.gameState.playerId!,
+                moveDirection: data,
             });
         });
     }
@@ -71,10 +72,9 @@ export class Game extends GameLoop {
         this.renderer.app.ticker.stop();
     }
 
-    protected _process(delta: number): void {
-        console.log("x");
+    protected _process(delta: number): void {}
+
+    protected _physicsProcess(delta: number): void {
         this.inputManager.updateMovement();
     }
-
-    protected _physicsProcess(delta: number): void {}
 }

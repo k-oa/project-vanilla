@@ -2,22 +2,6 @@ import { EventEmitter } from "./EventEmitter";
 import { GameActions } from "../types/events";
 import { GameAction, GameActionType } from "../enums/Events";
 
-//     private handleKeyDown(key: string): void {
-//         // Handle UI keys (local only, no server communication)
-
-//         // ГЕНІАЛЬНИЙ свіч
-//         switch (key) {
-//             case "e":
-//                 this.gameState.toggleInventory();
-//                 break;
-//             case "escape":
-//                 if (this.gameState.isInventoryOpen) {
-//                     this.gameState.toggleInventory();
-//                 } else {
-//                     this.gameState.openMenu();
-//                 }
-//                 break;
-
 export class InputManager extends EventEmitter<GameActions> {
     private keys: Set<string> = new Set();
     private mousePosition = { x: 0, y: 0 };
@@ -116,10 +100,8 @@ export class InputManager extends EventEmitter<GameActions> {
             const length = Math.hypot(x, y);
 
             this.emit(GameAction.MOVE, {
-                direction: {
-                    x: x / length,
-                    y: y / length,
-                },
+                x: x / length,
+                y: y / length,
             });
         }
     }

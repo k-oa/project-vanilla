@@ -30,11 +30,13 @@ export class SocketManager {
             playerId: player.id,
             players: players,
         });
-        socket.broadcast.emit(SocketEvent.PLAYER_JOINED, {
-            player: player.toDTO(),
-        });
+        socket.broadcast.emit(SocketEvent.PLAYER_JOINED, player.toDTO());
 
         socket.on(SocketEvent.DISCONNECT, () => this.handleDisconnect(socket));
+
+        socket.on("player:moving", (data) => {
+            socket.broadcast.emit("player:moving", data);
+        });
     }
 
     handleDisconnect(socket: TypedSocket) {

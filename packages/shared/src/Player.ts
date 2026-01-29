@@ -2,13 +2,14 @@ import { PlayerDTO } from "@project-vanilla/protocol";
 import { Point } from "./Point";
 
 export class Player {
+    id: string;
+    position: Point;
+    speed: number = 5;
+
     constructor(id: string, position: Point) {
         this.id = id;
         this.position = new Point().copyFrom(position);
     }
-
-    id: string;
-    position: Point;
 
     toDTO(): PlayerDTO {
         return {

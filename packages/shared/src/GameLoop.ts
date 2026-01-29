@@ -2,7 +2,7 @@ export abstract class GameLoop {
     public lastTime: number = 0;
     protected isRunning: boolean = false;
     private accumulator: number = 0;
-    private readonly FIXED_TIME_STEP = 1 / 60;
+    private readonly FIXED_TIME_STEP = 1 / 20;
 
     public abstract start(): void;
 
