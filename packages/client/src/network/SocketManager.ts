@@ -18,6 +18,11 @@ export class SocketManager {
     }
 
     setupListeners() {
+        // Debug
+        this.socket.onAny((data) =>
+            this.gameState.socketEventLog.push(data.toString())
+        );
+
         this.socket.on(SocketEvent.CONNECT, () => {
             console.log("Connected to server");
         });

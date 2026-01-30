@@ -14,6 +14,8 @@ export type GameEvents = {
 };
 
 export type GameActions = {
+    [GameAction.DEBUG]: void;
+
     [GameAction.MOVE]: { x: number; y: number };
     [GameAction.MOVE_UP]: void;
     [GameAction.MOVE_DOWN]: void;

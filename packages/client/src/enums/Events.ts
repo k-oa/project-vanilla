@@ -9,6 +9,8 @@ export const PlayerEvent = {
 export type PlayerEventType = (typeof PlayerEvent)[keyof typeof PlayerEvent];
 
 export const GameAction = {
+    DEBUG: "input.debug",
+
     MOVE: "input.move",
     MOVE_UP: "input.move.up",
     MOVE_DOWN: "input.move.down",

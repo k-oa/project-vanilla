@@ -45,6 +45,11 @@ export class Game extends GameLoop {
             this.renderer.updatePlayerPosition(data.id, data.moveDirection);
         });
 
+        // Debug
+        this.inputManager.on(GameAction.DEBUG, (data) => {
+            console.log(this.gameState.socketEventLog);
+        });
+
         this.inputManager.on(GameAction.MOVE, (data) => {
             this.gameState.movePlayer(this.gameState.playerId!, data);
             this.socketManager.socket.emit(SocketEvent.PLAYER_MOVING, {

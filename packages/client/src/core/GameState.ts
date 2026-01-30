@@ -11,6 +11,8 @@ export class GameState extends EventEmitter<GameEvents> {
     isInventoryOpen: boolean = false;
     isMenuOpen: boolean = false;
 
+    socketEventLog: string[] = [];
+
     initPlayer(data: PlayerInitPayload): void {
         this.playerId = data.playerId;
         this.players = {};

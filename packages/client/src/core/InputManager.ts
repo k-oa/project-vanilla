@@ -65,6 +65,12 @@ export class InputManager extends EventEmitter<GameActions> {
         this.keys.add(key);
 
         const action = this.keyBindings.get(key);
+
+        // Debug
+        if (e.key === "D") {
+            this.emit(GameAction.DEBUG, undefined);
+        }
+
         if (!action) return;
         this.emit(action, undefined);
     };
