@@ -43,8 +43,11 @@ export class SocketManager {
             this.gameState.removePlayer(id);
         });
 
-        this.socket.on(SocketEvent.PLAYER_MOVING, (data) => {
-            this.gameState.movePlayer(data.id, data.moveDirection);
+        this.socket.on(SocketEvent.PLAYER_MOVED, (data) => {
+            this.gameState.updatePlayerPosition(
+                data.playerId,
+                data.newPosition
+            );
         });
     }
 

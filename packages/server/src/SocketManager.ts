@@ -21,7 +21,6 @@ export class SocketManager {
     handleConnection(socket: TypedSocket) {
         const player = this.gameServer.addPlayer(socket.id);
         const players: Record<string, PlayerDTO> = {};
-
         this.gameServer.players.forEach((p) => {
             players[p.id] = p.toDTO();
         });
@@ -35,7 +34,14 @@ export class SocketManager {
         socket.on(SocketEvent.DISCONNECT, () => this.handleDisconnect(socket));
 
         socket.on("player:moving", (data) => {
-            socket.broadcast.emit("player:moving", data);
+            const player = this.gameServer.players.get(socket.id);
+            if (!player) return;
+            this.gameServer.movePlayer(player, data.moveDirection);
+
+            socket.broadcast.emit("player:moved", {
+                playerId: player.id,
+                newPosition: { x: player.position.x, y: player.position.y },
+            });
         });
     }
 

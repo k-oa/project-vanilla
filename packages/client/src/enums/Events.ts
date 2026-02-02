@@ -3,7 +3,7 @@ export const PlayerEvent = {
     PLAYER_ADDED: "player.added",
     PLAYER_REMOVED: "player.removed",
     PLAYER_MOVING: "player.moving",
-    PLAYER_STOP_MOVING: "player.stop_moving",
+    PLAYER_MOVED: "player.moved",
 } as const;
 
 export type PlayerEventType = (typeof PlayerEvent)[keyof typeof PlayerEvent];

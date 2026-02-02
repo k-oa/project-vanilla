@@ -6,6 +6,8 @@ export class Player {
     position: Point;
     speed: number = 5;
 
+    state: string = "idle"; // Good for now
+
     constructor(id: string, position: Point) {
         this.id = id;
         this.position = new Point().copyFrom(position);

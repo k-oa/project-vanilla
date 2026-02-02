@@ -10,7 +10,7 @@ export type GameEvents = {
         id: string;
         moveDirection: { x: number; y: number };
     };
-    [PlayerEvent.PLAYER_STOP_MOVING]: { id: string };
+    [PlayerEvent.PLAYER_MOVED]: { id: string };
 };
 
 export type GameActions = {

@@ -5,8 +5,8 @@ import { Player } from "@project-vanilla/shared";
 import { PlayerInitPayload } from "@project-vanilla/protocol";
 
 export class GameState extends EventEmitter<GameEvents> {
+    playerId: string = "";
     players: Record<string, Player> = {};
-    playerId: string | null = null;
 
     isInventoryOpen: boolean = false;
     isMenuOpen: boolean = false;
@@ -35,12 +35,16 @@ export class GameState extends EventEmitter<GameEvents> {
         this.emit(PlayerEvent.PLAYER_REMOVED, id);
     }
 
-    movePlayer(id: string, moveDirection: { x: number; y: number }): void {
+    updatePlayerPosition(
+        id: string,
+        newPosition: { x: number; y: number }
+    ): void {
         const player = this.players[id];
         if (!player) return;
 
-        player.position.x += moveDirection.x;
-        player.position.y += moveDirection.y;
-        this.emit(PlayerEvent.PLAYER_MOVING, { id, moveDirection });
+        player.position.x = newPosition.x;
+        player.position.y = newPosition.y;
+
+        player.state = "moving";
     }
 }

@@ -6,6 +6,9 @@ export class Renderer {
     public app: Application;
     private assetManager: AssetManager;
     private playerSprites: Map<string, Sprite> = new Map();
+    private debugSprites: Map<string, Sprite> = new Map();
+
+    public debug: boolean = false;
 
     constructor() {
         this.app = new Application();
@@ -30,11 +33,28 @@ export class Renderer {
         sprite.position.set(player.position.x, player.position.y);
         this.app.stage.addChild(sprite);
         this.playerSprites.set(player.id, sprite);
+
+        // Debug
+        if (this.debug) {
+            const debugSprite = new Sprite(this.assetManager.placeholder.npc);
+            debugSprite.scale.set(2, 2);
+            debugSprite.anchor.set(0.5, 0.5);
+            debugSprite.position.set(player.position.x, player.position.y);
+            debugSprite.tint = 0x33ff33;
+            this.app.stage.addChild(debugSprite);
+            this.debugSprites.set(player.id, debugSprite);
+        }
     }
 
     updatePlayerPosition(id: string, position: { x: number; y: number }) {
         const sprite = this.playerSprites.get(id)!;
-        sprite.position.set(sprite.x + position.x, sprite.y + position.y);
+        sprite.position.set(position.x, position.y);
+
+        // Debug
+        if (this.debug) {
+            const debugSprite = this.debugSprites.get(id)!;
+            debugSprite.position.set(position.x, position.y);
+        }
     }
 
     removePlayer(id: string) {
@@ -42,5 +62,13 @@ export class Renderer {
         this.app.stage.removeChild(sprite);
         this.playerSprites.delete(id);
         sprite.destroy();
+
+        // Debug
+        if (this.debug) {
+            const debugSprite = this.debugSprites.get(id)!;
+            this.app.stage.removeChild(debugSprite);
+            this.debugSprites.delete(id);
+            debugSprite.destroy();
+        }
     }
 }
