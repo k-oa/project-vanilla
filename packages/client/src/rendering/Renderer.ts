@@ -1,4 +1,4 @@
-import { Application, Sprite } from "pixi.js";
+import { Application, Sprite, TextureStyle } from "pixi.js";
 import { Player } from "@project-vanilla/shared";
 import { AssetManager } from "./AssetManager";
 
@@ -6,6 +6,7 @@ export class Renderer {
     public app: Application;
     private assetManager: AssetManager;
     private playerSprites: Map<string, Sprite> = new Map();
+    private tileSprites: Sprite[] = [];
     private debugSprites: Map<string, Sprite> = new Map();
 
     public debug: boolean = false;
@@ -16,11 +17,24 @@ export class Renderer {
     }
 
     async init() {
+        const cssWidth = window.innerWidth;
+        const cssHeight = window.innerHeight;
+        const deviceWidth = Math.round(cssWidth * window.devicePixelRatio);
+        const deviceHeight = Math.round(cssHeight * window.devicePixelRatio);
+
         await this.app.init({
-            resizeTo: window,
+            width: deviceWidth,
+            height: deviceHeight,
+            roundPixels: true,
+            resolution: 1,
+            autoDensity: false,
         });
+        this.app.canvas.style.width = `${cssWidth}px`;
+        this.app.canvas.style.height = `${cssHeight}px`;
         this.app.canvas.style.position = "absolute";
         this.app.canvas.style.imageRendering = "pixelated";
+        TextureStyle.defaultOptions.scaleMode = "nearest";
+
         document.body.appendChild(this.app.canvas);
 
         await this.assetManager.init();
@@ -28,7 +42,7 @@ export class Renderer {
 
     drawPlayer(player: Player) {
         const sprite = new Sprite(this.assetManager.placeholder.npc);
-        sprite.scale.set(2, 2);
+        sprite.scale.set(3);
         sprite.anchor.set(0.5, 0.5);
         sprite.position.set(player.position.x, player.position.y);
         this.app.stage.addChild(sprite);
@@ -37,7 +51,7 @@ export class Renderer {
         // Debug
         if (this.debug) {
             const debugSprite = new Sprite(this.assetManager.placeholder.npc);
-            debugSprite.scale.set(2, 2);
+            debugSprite.scale.set(2);
             debugSprite.anchor.set(0.5, 0.5);
             debugSprite.position.set(player.position.x, player.position.y);
             debugSprite.tint = 0x33ff33;
@@ -70,5 +84,13 @@ export class Renderer {
             this.debugSprites.delete(id);
             debugSprite.destroy();
         }
+    }
+
+    drawTile(position: { x: number; y: number }) {
+        const sprite = new Sprite(this.assetManager.placeholder.grass);
+        sprite.position.set(position.x, position.y);
+        sprite.scale.set(3, 3);
+        this.app.stage.addChild(sprite);
+        this.tileSprites.push(sprite);
     }
 }

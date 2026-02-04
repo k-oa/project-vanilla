@@ -6,12 +6,14 @@ import { SocketManager } from "../network/SocketManager";
 import { PlayerEvent, GameAction } from "../enums/Events";
 import { InputManager } from "./InputManager";
 import { PlaneGeometry } from "pixi.js";
+import { TileMap } from "@project-vanilla/shared";
 
 export class Game extends GameLoop {
     renderer: Renderer;
     // sceneManager: SceneManager;
     socketManager!: SocketManager;
     inputManager: InputManager;
+    private tileMap: TileMap;
     private gameState: GameState;
 
     constructor() {
@@ -19,6 +21,7 @@ export class Game extends GameLoop {
         this.gameState = new GameState();
         this.renderer = new Renderer();
         this.inputManager = new InputManager();
+        this.tileMap = new TileMap();
     }
 
     async init() {
@@ -34,6 +37,16 @@ export class Game extends GameLoop {
             this.tick(performance.now());
         });
         this.start();
+        const tileSize = 32 * 3;
+
+        for (const [y, row] of this.tileMap.tiles.entries()) {
+            for (const [x, tile] of row.entries()) {
+                this.renderer.drawTile({
+                    x: (x * tileSize * 1 + y * tileSize * -1) / 2,
+                    y: (y * tileSize * 0.5 + x * tileSize * 0.5) / 2,
+                });
+            }
+        }
     }
 
     private setupEventListeners(): void {
